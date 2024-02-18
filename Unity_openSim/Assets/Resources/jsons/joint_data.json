@@ -1,0 +1,145 @@
+[
+    {
+        "joint_name": "base",
+        "parent_sys": "ground",
+        "child_sys": "thorax",
+        "coord_name": "no_coord",
+        "coord_axis": "no_coord",
+        "motion_type": "no_coord",
+        "coord_value": "0",
+        "coord_upper_bound": "0",
+        "coord_lower_bound": "0"
+    },
+    {
+        "joint_name": "sc1",
+        "parent_sys": "thorax",
+        "child_sys": "clavicle_1",
+        "coord_name": "SC_y",
+        "coord_axis": "~[0,1,0]",
+        "motion_type": "1",
+        "coord_value": "-33.48599",
+        "coord_upper_bound": "-18.99928",
+        "coord_lower_bound": "-65.00206"
+    },
+    {
+        "joint_name": "sc2",
+        "parent_sys": "clavicle_1",
+        "child_sys": "clavicle_2",
+        "coord_name": "SC_z",
+        "coord_axis": "~[0,0,1]",
+        "motion_type": "1",
+        "coord_value": "5.00192",
+        "coord_upper_bound": "30.00007",
+        "coord_lower_bound": "5.00192"
+    },
+    {
+        "joint_name": "sc3",
+        "parent_sys": "clavicle_2",
+        "child_sys": "clavicle_r",
+        "coord_name": "SC_x",
+        "coord_axis": "~[1,0,0]",
+        "motion_type": "1",
+        "coord_value": "32.91435",
+        "coord_upper_bound": "82.99867",
+        "coord_lower_bound": "0.0"
+    },
+    {
+        "joint_name": "ac1",
+        "parent_sys": "clavicle_r",
+        "child_sys": "scapula_1",
+        "coord_name": "AC_y",
+        "coord_axis": "~[0,1,0]",
+        "motion_type": "1",
+        "coord_value": "45.57092",
+        "coord_upper_bound": "69.00131",
+        "coord_lower_bound": "33.00237"
+    },
+    {
+        "joint_name": "ac2",
+        "parent_sys": "scapula_1",
+        "child_sys": "scapula_2",
+        "coord_name": "AC_z",
+        "coord_axis": "~[0,0,1]",
+        "motion_type": "1",
+        "coord_value": "0.45825",
+        "coord_upper_bound": "20.00196",
+        "coord_lower_bound": "-21.88126"
+    },
+    {
+        "joint_name": "ac3",
+        "parent_sys": "scapula_2",
+        "child_sys": "scapula_r",
+        "coord_name": "AC_x",
+        "coord_axis": "~[1,0,0]",
+        "motion_type": "1",
+        "coord_value": "-12.06171",
+        "coord_upper_bound": "18.00233",
+        "coord_lower_bound": "-16.99966"
+    },
+    {
+        "joint_name": "gh1",
+        "parent_sys": "scapula_r",
+        "child_sys": "humerus_1",
+        "coord_name": "GH_y",
+        "coord_axis": "~[0,1,0]",
+        "motion_type": "1",
+        "coord_value": "43.86436",
+        "coord_upper_bound": "174.9985",
+        "coord_lower_bound": "-170.00231"
+    },
+    {
+        "joint_name": "gh2",
+        "parent_sys": "humerus_1",
+        "child_sys": "humerus_2",
+        "coord_name": "GH_z",
+        "coord_axis": "~[0,0,1]",
+        "motion_type": "1",
+        "coord_value": "-0.2177",
+        "coord_upper_bound": "84.00134",
+        "coord_lower_bound": "-30.00007"
+    },
+    {
+        "joint_name": "gh3",
+        "parent_sys": "humerus_2",
+        "child_sys": "humerus_r",
+        "coord_name": "GH_yy",
+        "coord_axis": "~[0,1,0]",
+        "motion_type": "1",
+        "coord_value": "-34.65866",
+        "coord_upper_bound": "178.99774",
+        "coord_lower_bound": "-176.99812"
+    },
+    {
+        "joint_name": "hu",
+        "parent_sys": "humerus_r",
+        "child_sys": "ulna_r",
+        "coord_name": "EL_x",
+        "coord_axis": "~[0.999766,0.008446,-0.019909]",
+        "motion_type": "1",
+        "coord_value": "5.0",
+        "coord_upper_bound": "140.0",
+        "coord_lower_bound": "5.0"
+    },
+    {
+        "joint_name": "ur",
+        "parent_sys": "ulna_r",
+        "child_sys": "radius_r",
+        "coord_name": "PS_y",
+        "coord_axis": "~[-0.113295,0.974059,0.195892]",
+        "motion_type": "1",
+        "coord_value": "5.0",
+        "coord_upper_bound": "160.0",
+        "coord_lower_bound": "5.0"
+    },
+    {
+        "joint_name": "rc",
+        "parent_sys": "radius_r",
+        "child_sys": "hand_r",
+        "coord_name": "no_coord",
+        "coord_axis": "no_coord",
+        "motion_type": "no_coord",
+        "coord_value": "0",
+        "coord_upper_bound": "0",
+        "coord_lower_bound": "0"
+    }
+]

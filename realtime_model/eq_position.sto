@@ -1,0 +1,6 @@
+eq_position
+nRows=1
+nColumns=12
+endheader
+time  SC_y  SC_z  SC_x  AC_y  AC_z  AC_x  GH_y  GH_z  GH_yy  EL_x  PS_y
+0.010000  -0.370820  0.131790  0.222725  0.620553  -0.435287  -0.313241  0.434196  0.498275  0.273012  0.656903  1.421406
