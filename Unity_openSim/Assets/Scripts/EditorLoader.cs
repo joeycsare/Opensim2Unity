@@ -52,7 +52,6 @@ public class EditorLoader : EditorWindow
             GUILayout.Label(" ");
             bodyEnabled = EditorGUILayout.BeginToggleGroup("Use own body file path", bodyEnabled);
             bodyFilepath = EditorGUILayout.TextField("", bodyFilepath);
-
             EditorGUILayout.EndToggleGroup();
             EditorGUILayout.EndHorizontal();
 
@@ -62,7 +61,6 @@ public class EditorLoader : EditorWindow
             GUILayout.Label(" ");
             jointEnabled = EditorGUILayout.BeginToggleGroup("Use own joint file path", jointEnabled);
             jointFilepath = EditorGUILayout.TextField("", jointFilepath);
-
             EditorGUILayout.EndToggleGroup();
             EditorGUILayout.EndHorizontal();
 
@@ -97,14 +95,15 @@ public class EditorLoader : EditorWindow
 
             if (GUILayout.Button("Start Loading"))
             {
+                // Creating default values
                 if (!meshEnabled)
                     meshFolderpath = "mesh";
                 if (!materialEnabled)
                     materialData = Resources.Load<Material>("BoneMat_1");
                 if (!bodyEnabled)
-                    bodyFilepath = "jsons/body_data";
+                    bodyFilepath = "jsons/body_data"; // Doesnt work atm, see in OpenSimLoader
                 if (!jointEnabled)
-                    jointFilepath = "jsons/joint_data";
+                    jointFilepath = "jsons/joint_data"; //Doesnt work atm
 
                 newObject = new GameObject(oName);
                 newObject.transform.position = Vector3.zero;
@@ -137,13 +136,13 @@ public class EditorLoader : EditorWindow
                 loadedState = false;
             }
             GUILayout.Space(5f);
-            if (GUILayout.Button("Add Model"))
+            if (GUILayout.Button("Add another Model"))
             {
                 loadedState = false;
             }
             GUILayout.Space(5f);
 
-            if (GUILayout.Button("Safe and close"))
+            if (GUILayout.Button("Safe and close")) // Same as X Button
             {
                 EditorLoader wnd = GetWindow<EditorLoader>();
                 wnd.Close();

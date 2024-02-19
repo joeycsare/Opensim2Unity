@@ -1,4 +1,4 @@
-# DAS3_model | openSim -> Unity converter for "4DTrainer" Project on HKA.
+# OpenSim -> Unity converter for "4DTrainer" Project on HKA.
 
 ### Slight Adaption of prnthp's repository "opensim-stl-export" to export OpenSim data as stl
 https://github.com/prnthp/opensim-stl-export

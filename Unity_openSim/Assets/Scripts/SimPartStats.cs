@@ -5,11 +5,12 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class SimPartStats : MonoBehaviour
 {
-    private void OnValidate()
+    private void OnValidate() // Updates on Editor event
     {
         DynamicUpdate();
     }
-    private void Update()
+
+    private void Update() // Only for builds when OnValidate is ignored
     {
         if (runtimeEnabled)
         {
@@ -17,21 +18,24 @@ public class SimPartStats : MonoBehaviour
         }
     }
 
+    // declarations are mostly [HideInInspector] public. 
+    // private variable values dont persist between Runtime sessions aka loading and the pressing start resets all non public in this class
+    // variables are in camel case for editor readability
     #region Declaration
     [HideInInspector] public OpenSimImport skeleton;
     public Osim_Joint thisJoint;
     public Osim_Body thisBody;
-    [HideInInspector] public string folderName = "mesh";
+    [HideInInspector] public string folderName = "mesh"; 
 
     [Header("Move Bones in % of movement Range")]
     [Range(0, 100)]
-    public float rotation = 0;
-    [HideInInspector] public float startRotation = 0;
+    public float rotation = 0; 
+    [HideInInspector] public float startRotation = 0; 
     [HideInInspector] public Quaternion startQuaternion = Quaternion.identity;
 
     [Header("Movement Options")]
-    public bool resetThis = false;
-    public bool resetAll = false;
+    public bool resetThis = false; // used for triggering in editor. Call ResetDyn() for execution with code
+    public bool resetAll = false; // Calls the ResetAllDynamics in the OpenSimImport class 
 
     [Header("Loading Status of this Bone")]
     public bool bodyLoaded = false;
@@ -40,7 +44,7 @@ public class SimPartStats : MonoBehaviour
     public bool isDynamic = false;
     public bool runtimeEnabled = false;
 
-
+    // parsed json values
     [HideInInspector] public Transform Iparent_sys;
     [HideInInspector] public Transform Ichild_sys;
     [HideInInspector] public Vector3 Icoord_axis = Vector3.zero;
@@ -65,7 +69,7 @@ public class SimPartStats : MonoBehaviour
     }
     private void InitBody()
     {
-        if (thisBody.mesh != "none")
+        if (thisBody.mesh != "none") // Loads mesh from specified resource folder, adds it to this Object and adds the material 
         {
             MeshFilter meshFilter = gameObject.AddComponent<MeshFilter>();
             meshFilter.mesh = Resources.Load<Mesh>(folderName + "/" + thisBody.mesh.ToString().Split('.')[0]);
@@ -74,27 +78,29 @@ public class SimPartStats : MonoBehaviour
             meshRenderer.material = skeleton.boneMaterial1;
         }
 
+        // parses serialized transformation matrix in string array of number lists
         string[] rows = thisBody.tmatrix.Replace("[", string.Empty).Replace("]", string.Empty).Split(';');
 
         for (int j = 0; j < 4; j++)
         {
-            string[] s_entrys = rows[j].Split(',');
+            string[] s_entrys = rows[j].Split(','); // parses number lists to 4x4 matrix
             Itmatrix.SetRow(j, new Vector4(float.Parse(s_entrys[0], CultureInfo.InvariantCulture), float.Parse(s_entrys[1], CultureInfo.InvariantCulture), float.Parse(s_entrys[2], CultureInfo.InvariantCulture), float.Parse(s_entrys[3], CultureInfo.InvariantCulture)));
         }
         bodyLoaded = true;
     }
     private void InitJoint()
     {
-        Ichild_sys = skeleton.transform.Find(thisJoint.child_sys);
+        // Finds the Unity Transform for the child_sys string
+        Ichild_sys = skeleton.transform.Find(thisJoint.child_sys); 
         try
         {
             if (thisJoint.parent_sys != "ground")
             {
-                Iparent_sys = skeleton.transform.Find(thisJoint.parent_sys);
+                Iparent_sys = skeleton.transform.Find(thisJoint.parent_sys); 
             }
             else
             {
-                Iparent_sys = skeleton.transform;
+                Iparent_sys = skeleton.transform; // If parent_sys is "ground", its the first object in the body tree
             }
         }
         catch
@@ -104,7 +110,7 @@ public class SimPartStats : MonoBehaviour
 
         jointLoaded = true;
 
-        if (thisJoint.coord_name != "no_coord")
+        if (thisJoint.coord_name != "no_coord") // parse joint info when a coordinate is available 
         {
             char[] splitChars = { '[', ']' };
             string[] axisEntrys = thisJoint.coord_axis.Split(splitChars)[1].Split(',');
@@ -122,15 +128,15 @@ public class SimPartStats : MonoBehaviour
         if (coordLoaded)
         {
             isDynamic = true;
-            startQuaternion = transform.localRotation;
-            rotation = 100 * (Icoord_value - Icoord_lower_bound) / (Icoord_upper_bound - Icoord_lower_bound);
-            startRotation = rotation;
+            startQuaternion = transform.localRotation; // Safe default pose
+            rotation = 100 * (Icoord_value - Icoord_lower_bound) / (Icoord_upper_bound - Icoord_lower_bound); // get proportion of the momentary deflection 
+            startRotation = rotation; // safe starting deflection for the reset funktion
         }
     }
     #endregion
 
     #region Calls
-    public void SetAxisPercent(float m_rotation)
+    public void SetAxisPercent(float m_rotation) // Set Joint movement on m_rotation proportion of the movement range
     {
         if (isDynamic)
         {
@@ -140,7 +146,7 @@ public class SimPartStats : MonoBehaviour
         else
             Debug.LogWarning("Body " + this.name + " is not dynamic");
     }
-    public void SetAxisAngle(float m_angle)
+    public void SetAxisAngle(float m_angle) // Set Joint movement on m_rotation angle if possible
     {
         if (isDynamic)
         {
@@ -151,7 +157,7 @@ public class SimPartStats : MonoBehaviour
         else
             Debug.LogWarning("Body " + this.name + " is not dynamic");
     }
-    public void RotateAxisPercent(float m_rotation)
+    public void RotateAxisPercent(float m_rotation) // Rotate Joint by m_rotation percent if possible
     {
         if (isDynamic)
         {
@@ -162,7 +168,7 @@ public class SimPartStats : MonoBehaviour
         else
             Debug.LogWarning("Body " + this.name + " is not dynamic");
     }
-    public void RotateAxisAngle(float m_angle)
+    public void RotateAxisAngle(float m_angle) // Rotate Joint with m_rotation (deg) if possible
     {
         if (isDynamic)
         {
@@ -180,9 +186,9 @@ public class SimPartStats : MonoBehaviour
     {
         if (isDynamic)
         {
-            transform.localRotation = startQuaternion;
-            float angle = rotation / 100 * (Icoord_upper_bound - Icoord_lower_bound) + Icoord_lower_bound - Icoord_value;
-            transform.Rotate(Icoord_axis, angle);
+            transform.localRotation = startQuaternion; // Sets pose on default
+            float angle = rotation / 100 * (Icoord_upper_bound - Icoord_lower_bound) + Icoord_lower_bound - Icoord_value; // angle calculation by given percentage of movement
+            transform.Rotate(Icoord_axis, angle); // rotate axis to this angle
 
             if (resetThis)
             {
@@ -211,13 +217,15 @@ public class SimPartStats : MonoBehaviour
     {
         if (bodyLoaded)
         {
+            // 4x4 Matrix -> position, rotation and scale. 
+            // consult unity doc "4x4 matrix" or/and search for "homogeneous coordinates" and general matrix calculation
             transform.localScale = ExtractScale(Itmatrix);
             transform.localPosition = ExtractPosition(Itmatrix);
             transform.localRotation = ExtractRotation(Itmatrix);
         }
         if (jointLoaded)
         {
-            Ichild_sys.parent = Iparent_sys;
+            Ichild_sys.parent = Iparent_sys; // rearanges Objects to hierarchy tree
         }
     }
     public Quaternion ExtractRotation(Matrix4x4 matrix)
